@@ -2,6 +2,7 @@ package censusanalyser;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.exceptions.CsvRuntimeException;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -16,13 +17,15 @@ public class CensusAnalyser {
             CsvToBean<IndiaCensusCsv> csvToBean = new CsvToBeanBuilder(reader).withType(IndiaCensusCsv.class).withIgnoreLeadingWhiteSpace(true).build();
             Iterator<IndiaCensusCsv> censusCsvIterator = csvToBean.iterator();
             int numOfEntries = 0;
-            while (censusCsvIterator.hasNext()){
+            while (censusCsvIterator.hasNext()) {
                 numOfEntries++;
                 IndiaCensusCsv censusData = censusCsvIterator.next();
             }
             return numOfEntries;
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM);
+        } catch (RuntimeException e){
+            throw new CensusAnalyserException(e.getMessage(),CensusAnalyserException.ExceptionType.CSV_FILE_INTERNAL_ISSUES);
         }
     }
 }
