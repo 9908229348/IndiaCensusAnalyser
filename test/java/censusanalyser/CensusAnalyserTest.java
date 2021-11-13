@@ -81,5 +81,15 @@ public class CensusAnalyserTest {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CSV_FILE_INTERNAL_ISSUES,e.type);
         }
     }
+
+    @Test
+    public void givenWrongHeadersForStateCodeCsv_ReturnsCustomeException(){
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            int numOfRecords = censusAnalyser.loadStateCodeData(STATECODECSV_WRONGDELIMITER);
+        }catch (CensusAnalyserException e){
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.CSV_FILE_INTERNAL_ISSUES, e.type);
+        }
+    }
 }
 
