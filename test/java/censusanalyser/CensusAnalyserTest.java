@@ -5,11 +5,13 @@ import org.junit.Test;
 
 public class CensusAnalyserTest {
     private static final String INDIA_CENSUS_CSV_FILEPATH = "./src/test/resources/IndiaStateCensusData.csv";
+    private static final String INDIA_CENSUS_WRONGEXTENSION = "./src/test/resources/IndiaStateCensusData.txt";
     private static final String WRONG_FILE_PATH = "./src/main/resources/IndiaStateCensusData.csv";
     private static final String INDIA_CENSUS_CSV_WRONGDELIMITER = "./src/test/resources/IndiaStateCensusDataWrongDelimiter.csv";
     private static final String STATE_CODE_CSV = "./src/test/resources/IndiaStateCode.csv";
     private static final String WRONG_STATE_CODE_CSV_FILE = "./src/main/resources/IndiaStateCode.csv";
     private static final String STATECODECSV_WRONGDELIMITER = "./src/test/resources/IndiaStateCodeWrongDelimiter.csv";
+    private static final String STATE_CODE_WRONGEXTENSION = "./src/test/resources/IndiaStateCode.txt";
 
     @Test
     public void givenIndiaCensusCsvFile_ReturnsCorrectRecords() {
@@ -28,6 +30,16 @@ public class CensusAnalyserTest {
             Assert.assertEquals(29, numOfRecords);
         }catch (CensusAnalyserException e){
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM, e.type);
+        }
+    }
+
+    @Test
+    public void givenWrongType_ReturnsCustomException(){
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            int numOfRecords = censusAnalyser.loadIndiaCensusData(INDIA_CENSUS_WRONGEXTENSION);
+        }catch (CensusAnalyserException e){
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.WRONGFILEEXTENSION, e.type);
         }
     }
 
@@ -89,6 +101,16 @@ public class CensusAnalyserTest {
             int numOfRecords = censusAnalyser.loadStateCodeData(STATECODECSV_WRONGDELIMITER);
         }catch (CensusAnalyserException e){
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CSV_FILE_INTERNAL_ISSUES, e.type);
+        }
+    }
+
+    @Test
+    public void givenWrongExtension_ReturnsCustomException(){
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            int numOfRecords = censusAnalyser.loadStateCodeData(STATE_CODE_WRONGEXTENSION);
+        }catch (CensusAnalyserException e){
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.WRONGFILEEXTENSION, e.type);
         }
     }
 }
