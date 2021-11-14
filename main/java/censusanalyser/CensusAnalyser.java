@@ -4,6 +4,7 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.exceptions.CsvRuntimeException;
 
+import javax.management.RuntimeErrorException;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -24,6 +25,8 @@ public class CensusAnalyser {
             return numOfEntries;
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM);
+        }catch (RuntimeErrorException e){
+            throw new CensusAnalyserException(e.getMessage(), CensusAnalyserException.ExceptionType.WRONG_FILE_EXTENSION);
         } catch (RuntimeException e){
             throw new CensusAnalyserException(e.getMessage(),CensusAnalyserException.ExceptionType.CSV_FILE_INTERNAL_ISSUES);
         }
